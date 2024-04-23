@@ -1,0 +1,47 @@
+name: Generate Chart
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '3,18,33,48 * * * *' # Runs at 3, 18, 33, and 48 minutes past each hour
+
+jobs:
+  generate-chart:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        pip install pipenv
+        pipenv install
+
+    - name: Generate chart
+      shell: python
+      run: |
+        from chart_generator import generate_chart
+        chart_svg_data = generate_chart()
+        with open('static/bitsbipsbricks/How-to-Chart/github-action-chart.svg', 'wb') as file:
+            file.write(chart_svg_data)
+
+    - name: Commit chart
+      run: |
+        git config user.name "Automated"
+        git config user.email "actions@users.noreply.github.com"
+        git add static/bitsbipsbricks/How-to-Chart/github-action-chart.svg
+        timestamp=$(date -u)
+        # Extract branch name from github.ref, assuming it's in refs/heads/branch_name format
+        branch_name=$(echo $GITHUB_REF | sed -e "s/^refs\/heads\///")
+        git commit -m "Generated: ${timestamp}: commit: ${{github.sha}}" || exit 0
+        git push origin HEAD:$branch_name --force
+  
+  
+        
+        
