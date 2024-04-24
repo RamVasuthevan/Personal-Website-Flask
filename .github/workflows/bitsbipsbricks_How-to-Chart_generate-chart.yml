@@ -24,12 +24,15 @@ jobs:
         pipenv install
 
     - name: Generate chart
-      shell: python
       run: |
-        from chart_generator import generate_chart
-        chart_svg_data = generate_chart()
-        with open('static/bitsbipsbricks/How-to-Chart/github-action-chart.svg', 'wb') as file:
-            file.write(chart_svg_data)
+        pipenv run python -c "
+    import os
+    from chart_generator import generate_chart
+    chart_svg_data = generate_chart()
+    with open('static/bitsbipsbricks/How-to-Chart/github-action-chart.svg', 'wb') as file:
+        file.write(chart_svg_data)
+    "
+      shell: bash
 
     - name: Commit chart
       run: |
