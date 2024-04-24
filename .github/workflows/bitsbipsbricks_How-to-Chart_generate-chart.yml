@@ -23,14 +23,19 @@ jobs:
         pip install pipenv
         pipenv install
 
-    - name: Generate chart
-      shell: python
+    - name: Write Python script to file
       run: |
+        cat <<EOF > tmp.py
         from chart_generator import generate_chart
+        
         chart_svg_data = generate_chart()
         with open('static/bitsbipsbricks/How-to-Chart/github-action-chart.svg', 'wb') as file:
             file.write(chart_svg_data)
-
+        EOF
+        
+    - name: Execute Python script
+      run: |
+        pipenv run python tmp.py
     - name: Commit chart
       run: |
         git config user.name "Automated"
