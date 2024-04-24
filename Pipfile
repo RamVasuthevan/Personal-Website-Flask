@@ -8,6 +8,7 @@ flask = "3.0.3"
 pandas = "2.2.2"
 matplotlib = "3.8.4"
 requests = "2.31.0"
+gunicorn = "21.2.0"
 
 [dev-packages]
 black = "24.4.0"
