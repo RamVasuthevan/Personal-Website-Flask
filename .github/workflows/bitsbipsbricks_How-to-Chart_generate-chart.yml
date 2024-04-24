@@ -24,6 +24,7 @@ jobs:
         pipenv install
 
     - name: Generate chart
+      working-directory: Personal-Website-Flask
       run: |
         pipenv run python -c "from chart_generator import generate_chart; chart_svg_data = generate_chart(); with open('static/bitsbipsbricks/How-to-Chart/github-action-chart.svg', 'wb') as file: file.write(chart_svg_data)"
       shell: bash
