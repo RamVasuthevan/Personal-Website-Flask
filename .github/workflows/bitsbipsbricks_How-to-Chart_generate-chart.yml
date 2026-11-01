@@ -3,7 +3,7 @@ name: Generate Chart
 on:
   workflow_dispatch:
   schedule:
-    - cron: '3,18,33,48 * * * *' # Runs at 3, 18, 33, and 48 minutes past each hour
+    - cron: '3 12 * * *' # Runs daily at 12:03 UTC
 
 jobs:
   generate-chart:
